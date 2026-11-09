@@ -1,0 +1,120 @@
+.checkout-title {
+    text-align: center;
+    font-size: 2.2em;
+    font-weight: 800;
+    margin-top: 40px;
+    margin-bottom: 32px;
+    letter-spacing: 1.1px;
+    color: #0071e3;
+
+    background-clip: text;
+}
+#checkout-cart {
+    max-width: 480px;
+    margin: 32px auto 24px auto;
+    background: #fff;
+    border-radius: 14px;
+    padding: 28px 32px 18px 32px;
+}
+
+
+#checkout-cart h4 {
+    font-size: 1.25em;
+    font-weight: 700;
+    color: #005bb5;
+    margin-bottom: 18px;
+    text-align: center;
+}
+#checkout-cart ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+#checkout-cart li {
+    font-size: 1em;
+    color: gray;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#checkout-cart li:last-child {
+    border-bottom: none;
+}
+.alert {
+    max-width: 480px;
+    margin: 18px auto;
+    padding: 12px 18px;
+    border-radius: 7px;
+    font-size: 1.08em;
+    text-align: center;
+}
+.alert-danger {
+    background: #ffeaea;
+    color: #c00;
+    border: 1px solid #ffb3b3;
+}
+.alert-success {
+    background: #eaffea;
+    color: #1a7f37;
+    border: 1px solid #b3ffb3;
+}
+
+ #result {
+        display: none ;
+    }
+
+
+.ordine-successo-icona {
+    font-size: 3.5em;
+    color: #1a7f37;
+    margin-bottom: 12px;
+    background: #b3ffb3;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#checkout-form {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+#checkout-form .btn-success {
+    background: #0071e3;
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    padding: 14px 38px;
+    font-size: 1.15em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#checkout-form .btn-success:hover {
+    background: #005bb5;
+}
+.checkout-thumb {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    border-radius: 7px;
+    margin-right: 12px;
+    vertical-align: middle;
+    background: #f5f5f5;
+}
+
+@media (max-width: 600px) {
+    #checkout-cart {
+        padding: 18px 8px 10px 8px;
+    }
+    #checkout-form .btn-success {
+        width: 50%;
+        padding: 14px 0;
+    }
+}

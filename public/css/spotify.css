@@ -1,0 +1,391 @@
+main {
+    margin-top: 56px ;
+}
+
+.spotify-search-form-centered {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+#album-container form {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto 32px auto;
+}
+.spotify-title {
+    width: 100%;
+    display: block;
+    text-align: center;
+}
+.spotify-album-card {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    background: linear-gradient(120deg, #232323 80%, #1db95422 100%);
+    border-radius: 22px;
+    padding: 36px 48px;
+    gap: 38px;
+    min-width: 540px;
+    max-width: 900px;
+    margin-bottom: 32px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.spotify-album-info {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.spotify-album-title,
+.spotify-album-meta {
+    text-align: left;
+}
+
+
+#album-container h3{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 1.5em;
+}
+
+.spotify-album-cover {
+    width: 180px;
+    height: 180px;
+    border-radius: 18px;
+    object-fit: cover;
+    border: 3px solid #1db95444;
+    background: #181818;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.spotify-album-tracks {
+    margin-top: 18px;
+    background: #232323;
+    border-radius: 14px;
+    padding: 22px 32px;
+    max-width: 600px;
+    color: #fff;
+    margin-left: auto;
+    margin-right: auto;
+}
+.spotify-album-tracks-list {
+
+    padding-left: 0;
+    margin: 0;
+    text-align: left;
+}
+.spotify-back-btn {
+    display: block;
+    margin: 32px auto 0 auto;
+    background: #1db954;
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.18em;
+    text-decoration: none;
+    border-radius: 10px;
+    padding: 16px 44px;
+    letter-spacing: 0.5px;
+}
+.spotify-back-btn:hover {
+    background: #169943;
+    color: #fff;
+    transform: scale(1.04);
+}
+#album-container {
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 32px;
+    padding: 32px 0 24px 0;
+    margin: 0 auto;
+    max-width: 1100px;
+    background: rgba(35,35,35,0.85);
+    border-radius: 18px;
+}
+
+.spotify-album-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 36px;
+    margin-bottom: 36px;
+}
+.spotify-album-card {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    background: linear-gradient(120deg, #232323 80%, #1db95422 100%);
+    border-radius: 22px;
+    padding: 36px 48px 36px 36px;
+    gap: 38px;
+    min-width: 540px;
+    max-width: 900px;
+    margin-bottom: 32px;
+}
+.spotify-album-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.spotify-album-title {
+    font-size: 2em;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 4px;
+}
+.spotify-album-meta {
+    font-size: 1.1em;
+    color: #b3b3b3;
+    margin-bottom: 8px;
+}
+.spotify-album-cover {
+    width: 180px;
+    height: 180px;
+    border-radius: 18px;
+    object-fit: cover;
+    border: 3px solid #1db95444;
+    background: #181818;
+}
+.spotify-album-tracks {
+    margin-top: 18px;
+    background: #232323;
+    border-radius: 14px;
+    padding: 22px 32px;
+    max-width: 600px;
+    color: #fff;
+}
+.spotify-album-tracks-title {
+    font-size: 1.15em;
+    font-weight: 700;
+    color: #1db954;
+    margin-bottom: 10px;
+}
+
+.spotify-album-tracks-list li {
+    margin-bottom: 6px;
+    font-size: 1.07em;
+    color: #fff;
+}
+.spotify-back-btn {
+    display: inline-block;
+    position: relative;
+    bottom: 49px;
+    margin-top: 28px;
+    background: #1db954;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1em;
+    text-decoration: none;
+    border-radius: 8px;
+    padding: 12px 32px;
+}
+.spotify-back-btn:hover {
+    background: #169943;
+    color: #fff;
+}
+.spotify-switch-search {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 32px;
+}
+.spotify-switch-btn {
+    background: #1db954;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1em;
+    text-decoration: none;
+    border-radius: 8px;
+    padding: 10px 28px;
+    display: inline-block;
+}
+.spotify-switch-btn:hover {
+    background: #169943;
+    color: #fff;
+}
+.spotify-result-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+    margin-top: 18px;
+    margin-bottom: 18px;
+}
+
+.spotify-result-card {
+    background: linear-gradient(120deg, #232323 80%, #1db95422 100%);
+    border-radius: 18px;
+    padding: 26px 32px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    width: 420px;
+    cursor: pointer;
+    border: 2.5px solid transparent;
+    margin-bottom: 8px;
+}
+.spotify-result-card:hover {
+    border: 2.5px solid #1db954;
+    background: linear-gradient(120deg, #282828 80%, #1db95433 100%);
+    transform: translateY(-2px) scale(1.025);
+}
+.spotify-result-img {
+    width: 84px;
+    height: 84px;
+    border-radius: 16px;
+    object-fit: cover;
+    border: 3px solid #1db95444;
+    background: #181818;
+}
+.spotify-result-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.spotify-result-title {
+    font-size: 1.25em;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+.spotify-result-artist {
+    font-size: 1.08em;
+    color: #1db954;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+.spotify-result-meta {
+    font-size: 1em;
+    color: #b3b3b3;
+    font-style: italic;
+}
+.spotify-search-flex {
+    gap: 48px;
+    margin-bottom: 32px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+#album-container form {
+    margin: 0 auto 32px auto;
+    display: flex;
+    justify-content: center;
+    max-width: 420px;
+    width: 100%;
+}
+#album-container form,
+#song-container form {
+    margin-bottom: 0;
+}
+form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+}
+
+.hidden{
+    display: none;
+}
+
+.footer{
+    background: white;
+}
+.spotify-search-input {
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.1em;
+    background: #232323;
+    color: #fff;
+    outline: none;
+}
+.spotify-search-input:focus {
+    background: #282828;
+}
+.spotify-search-btn {
+    padding: 10px 24px;
+    border-radius: 8px;
+    border: none;
+    background: #1db954;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+.spotify-search-btn:hover {
+    background: #169943;
+}
+body {
+    background: #181818;
+    color: #fff;
+}
+.spotify-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 32px;
+}
+.spotify-hero-logo {
+    height: 72px;
+    border-radius: 16px;
+    margin-bottom: 12px;
+}
+.spotify-title {
+    font-size: 2.3em;
+    font-weight: 800;
+    color: #1db954;
+    margin-bottom: 8px;
+    text-align: center;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 8px rgba(30,215,96,0.08);
+}
+.spotify-desc {
+    font-size: 1.15em;
+    color: #b3b3b3;
+    text-align: center;
+    margin-bottom: 0;
+}
+.album-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: center;
+    margin-bottom: 32px;
+}
+#song-container {
+    margin-top: 24px;
+    font-size: 1.5em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media (min-width: 1024px) {
+    main {
+        margin-top: 64px;
+    }
+}
+
+@media (max-width: 425px) {
+    .spotify-album-card{
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 24px;
+        gap: 24px;
+        min-width: 280px;
+    }
+}

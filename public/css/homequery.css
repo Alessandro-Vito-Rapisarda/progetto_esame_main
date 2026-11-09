@@ -1,0 +1,821 @@
+
+
+@media (max-width: 1023px) {
+    #hamburger-extra-buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+        width: 100%;
+        padding: 0 0 24px 0;
+        box-sizing: border-box;
+    }
+
+    #hamburger-search-form {
+        width: 100%;
+        max-width: 95%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        margin-bottom: 18px;
+    }
+
+    .hamburger-search-input {
+        min-width: 0;
+        border-radius: 18px 0 0 18px;
+        border: none;
+        font-size: 1.22em;
+        outline: none;
+        background: #fff;
+        color: #222;
+        margin-right: 0;
+        text-align: left;
+        box-sizing: border-box;
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 500;
+        padding: 10px;
+    }
+
+    .hamburger-search-input::placeholder {
+        color: #b0b0b0;
+        font-size: 1.08em;
+        font-weight: 400;
+        opacity: 1;
+    }
+
+    .hamburger-search-input:focus {
+        border-color: #0071e3;
+        background-color: #f8faff;
+    }
+
+    .hamburger-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        font-size: 1.13em;
+        font-weight: 700;
+        border: none;
+        border-radius: 12px;
+        padding: 15px 0;
+        cursor: pointer;
+        margin: 0;
+        max-width: 100%;
+    }
+
+    .hamburger-btn-icon {
+        width: 22px;
+        height: 22px;
+        object-fit: contain;
+        background: none;
+        border-radius: 50%;
+        padding: 2px;
+        margin-right: 6px;
+    }
+
+    .hamburger-btn.search-btn {
+        background: #007aff;
+        color: #fff;
+        min-width: 110px;
+        padding: 10px;
+        border-radius: 0 18px 18px 0;
+        height: 100%;
+        margin: 0;
+        width: auto;
+        max-width: 180px;
+        font-size: 1.22em;
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .hamburger-btn.search-btn:hover {
+        background: linear-gradient(90deg, #0071e3 0%, #00c6fb 100%);
+        transform: translateY(-2px) scale(1.03);
+    }
+
+    .hamburger-btn-icon {
+        width: 22px;
+        height: 22px;
+        object-fit: contain;
+        background: none;
+        border-radius: 50%;
+        padding: 2px;
+        margin-right: 6px;
+        display: inline-block;
+    }
+
+    .hamburger-btn.logout-btn {
+        background: linear-gradient(90deg, #ff3b3b 0%, #ff7b7b 100%);
+        color: #fff;
+        max-width: 50%;
+    }
+
+    .hamburger-btn.logout-btn:hover {
+        background: linear-gradient(90deg, #ff7b7b 0%, #ff3b3b 100%);
+    }
+
+    .hamburger-spacer {
+        flex: 1;
+    }
+
+    #hamburger-extra-buttons form {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 1023px) {
+    #search-btn-wrapper,
+    #account-dropdown-wrapper {
+        display: none !important;
+    }
+
+    .fakestore-info a {
+        color: #ffb300;
+    }
+
+    .hamburger {
+        display: block !important;
+        position: absolute;
+        right: 70px;
+        top: 44%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        font-size: 2em;
+        cursor: pointer;
+        z-index: 1011;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 56px;
+        right: 0;
+        background: #fff;
+        width: 70vw;
+        max-width: 320px;
+        height: auto;
+        padding: 32px 24px 24px 24px;
+        z-index: 1001;
+        opacity: 1;
+        pointer-events: auto;
+        gap: 16px;
+        border-radius: 0 0 16px 16px;
+    }
+
+    .nav-links.open a {
+        font-size: 1.15em;
+        font-weight: 600;
+        color: #222;
+        padding: 12px 18px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s;
+        margin: 0 0 2px 0;
+        letter-spacing: 0.5px;
+        display: block;
+    }
+
+    .nav-links.open a:hover {
+        background: #f2f2f2;
+        color: #0071e3;
+    }
+
+    #welcome-message {
+        display: none;
+    }
+
+    .nav-logo,
+    .dropdown-account,
+    #shopping-btn {
+        z-index: 1012;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        z-index: 1000;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: nowrap;
+        padding-right: 12px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    html,
+    body {
+        min-width: 320px;
+        width: 100vw;
+        overflow-x: auto;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 900px) {
+    .footer-hamburger {
+        background: #222;
+        color: #fff;
+        border: none;
+        outline: none;
+        width: 100vw;
+        padding: 18px 0;
+        font-size: 1.5em;
+        text-align: center;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .footer-api-menu {
+        background: #222;
+        color: #fff;
+        width: 100vw;
+        border-radius: 0 0 16px 16px;
+        margin: 0;
+        padding: 18px 0 8px 0;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .footer-api-link {
+        color: #1db954;
+        font-weight: bold;
+        font-size: 1.2em;
+        margin: 12px 8px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        flex-direction: row;
+    }
+
+    .footer-api-link img {
+        width: 51px;
+        height: 41px;
+        border-radius: 8px;
+    }
+
+    .footer-center {
+        background: none;
+        color: #888;
+        text-align: center;
+        padding: 12px 0 0 0;
+        font-size: 14px;
+        border-radius: 0;
+        margin: 0 auto;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+}
+
+@media (max-width: 700px) {
+    .nav-links {
+        position: fixed;
+        top: 56px;
+        right: -100vw;
+        flex-direction: column;
+        background: #fff;
+        width: 70vw;
+        max-width: 320px;
+        height: calc(100vh - 56px);
+        padding: 32px 24px 24px 24px;
+        z-index: 1001;
+        opacity: 0;
+        pointer-events: none;
+        display: flex;
+    }
+
+    .nav-links.open {
+        right: 0;
+        opacity: 1;
+        pointer-events: auto;
+        display: flex;
+    }
+
+    .hamburger {
+        display: block;
+        right: 70px;
+    }
+
+    .nav-logo,
+    .dropdown-account,
+    #shopping-btn {
+        z-index: 1011;
+    }
+
+    nav > .nav-links {
+        margin-left: 0;
+    }
+
+    nav > .nav-links:not(.open) {
+        display: flex;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .hero-content {
+        font-size: 1.5em;
+        width: 220px;
+        left: 15%;
+        margin-top: 16px;
+    }
+
+    .center p {
+        font-size: 28px;
+    }
+
+    .description p {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 590px) {
+    .nav-links {
+        display: none;
+        position: fixed;
+        top: 56px;
+        right: 0;
+        flex-direction: column;
+        background: #fff;
+        width: 70vw;
+        max-width: 320px;
+        height: calc(100vh - 56px);
+        padding: 32px 24px 24px 24px;
+        z-index: 1001;
+        opacity: 0;
+        pointer-events: none;
+        transition: right 0.3s, opacity 0.3s;
+    }
+
+    .nav-links.open {
+        display: flex;
+        right: 0;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    #welcome-message {
+        display: none;
+    }
+
+    .nav-logo,
+    .dropdown-account,
+    #shopping-btn {
+        z-index: 1012;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        z-index: 1000;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: nowrap;
+        padding-right: 12px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    html,
+    body {
+        min-width: 320px;
+        width: 100vw;
+        overflow-x: auto;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 440px) {
+    nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        z-index: 1000;
+        background: #fff;
+    }
+
+    .hamburger {
+        display: flex;
+        justify-content: space-between;
+
+        margin-left: 0;
+        z-index: 1001;
+    }
+
+    main {
+        margin-top: 48px;
+    }
+}
+
+@media (max-width: 400px) {
+    .hamburger {
+        right: 12px;
+        font-size: 2em;
+        top: 44%;
+        transform: translateY(-50%);
+        position: absolute;
+        z-index: 1011;
+    }
+
+    nav {
+        padding-right: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    html,
+    body {
+        overflow-x: hidden;
+    }
+
+    .hero-iphone-button .btn {
+        left: -16px;
+        font-size: 18px;
+    }
+
+    .hero-content {
+        font-size: 1.5em;
+        width: 220px;
+        margin-top: 16px;
+    }
+
+    .sticker .img1 {
+        top: 4px;
+        right: 34%;
+    }
+
+    .hero-iphone img {
+        width: auto;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .hero-macbook-subdescription p {
+        left: 235px;
+    }
+
+    .hero-macbook-button .btn {
+        text-align: center;
+        bottom: 97px;
+        left: 41%;
+        z-index: 2;
+        border-color: rgba(0, 0, 0, 0);
+        background: #0071e3;
+        color: white;
+    }
+
+    .hero-iphone-subdescription p {
+        left: -79px;
+        padding-top: 15px;
+        width: 292px;
+        font-size: 20px;
+        font-weight: 400;
+        letter-spacing: 0.007em;
+        z-index: 2;
+        margin: 0px;
+    }
+
+    .hero-iphone-title p {
+        position: relative;
+        left: -14px;
+        font-size: 56px;
+        font-weight: 600;
+        line-height: 1.2;
+        margin: 0 auto;
+        padding: 0;
+        color: #333;
+        text-align: center;
+    }
+
+    .hero-iphone-description p {
+        position: relative;
+        top: 49px;
+        left: 3px;
+        padding-top: 5px;
+        width: 446px;
+        font-size: 26px;
+        font-weight: 400;
+        letter-spacing: 0.007em;
+        color: #1d1d1f;
+        z-index: 2;
+        margin: 0px;
+    }
+
+    .hero-iphone {
+        position: relative;
+        width: 150px;
+        margin: 16px auto 0;
+        left: 0;
+    }
+
+    .hero-button {
+        display: block;
+        margin: 16px auto;
+        text-align: center;
+    }
+
+    .dropdown-account {
+        overflow: visible;
+        position: relative;
+    }
+
+    .account-dropdown {
+        position: absolute;
+        right: 0;
+        top: 100%;
+        background: #fff;
+        border: 2px solid #0071e3;
+        border-radius: 12px;
+        min-width: 180px;
+        z-index: 1000;
+        font-size: 1.08em;
+    }
+
+    .hero-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background-color: #f9f9f9;
+        padding: 20px;
+    }
+
+    .genmoij {
+        right: 250px;
+        bottom: 82%;
+    }
+
+    .hero-bottom .button {
+        position: relative;
+        padding-top: 40px;
+        left: -9px;
+    }
+
+    .footer-flex {
+        display: none !important;
+    }
+
+    .footer-hamburger {
+        display: flex;
+    }
+
+    .footer-api-menu {
+        display: none;
+    }
+
+    .footer-api-menu.open {
+        display: flex;
+    }
+
+    .sticker .img2 {
+        top: 6px;
+        right: 35%;
+    }
+
+ 
+    
+}
+
+
+@media (max-width: 463px) {
+    .bubble-wrapper {
+        font-weight: 700;
+        left: 30px;
+        font-family: "Inter", sans-serif;
+        background-color: #007aff;
+        color: white;
+        border-radius: 40px;
+        display: inline-block;
+        position: relative;
+        letter-spacing: 0;
+    }
+
+    .hero-content p {
+        line-height: 38px;
+        font-size: 26px;
+        font-weight: 600;
+    }
+
+    .hero-bottom .button {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding-top: 60px;
+    }
+
+    .hero-macbook-subdescription p {
+        left: 75px;
+        
+    }
+
+    .hero-iphone-title p {
+        left: -4px;
+        top: 0px;
+    }
+
+    .hero-iphone-description p {
+        left: 38px;
+        top: 10px;
+        font-size: 23px;
+    }
+
+    .hero-iphone-button .btn {
+        left: -9px;
+        top: 130px;
+    }
+
+    .hero-iphone img {
+        width: 1601px;
+    }
+
+    .hero-iphone-subdescription p {
+        left: -79px;
+        top: 179px;
+        font-size: 21px;
+        width: 302px;
+    }
+
+    .hero-macbook-button .btn {
+        left: 33%;
+        
+    }
+
+    .genmoij {
+        right: 72%;
+        bottom: 82%;
+    }
+
+    .sticker .img1 {
+        left: 20px;
+        top: -16px;
+        z-index: 2;
+    }
+
+    .sticker .img2 {
+        top: -14px;
+        left: 22%;
+    }
+
+    nav {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        padding: 0 12px 0 12px;
+        gap: 0.8em;
+    }
+
+    .nav-logo {
+        margin-right: 0.7em;
+    }
+
+    #shopping-btn {
+        margin-right: 0.7em;
+    }
+
+    .dropdown-account {
+        margin-right: 0.7em;
+    }
+
+    .hamburger {
+        order: 4;
+        margin-left: 0.7em;
+        position: static;
+        font-size: 2em;
+        z-index: 1011;
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex !important;
+        align-items: center;
+    }
+
+    nav > * {
+        display: flex;
+        align-items: center;
+        gap: 0.7em;
+    }
+}
+
+@media (max-width: 1023px) {
+    nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: nowrap;
+        padding: 0 18px 0 18px;
+        gap: 0.5em;
+        height: 56px;
+        min-height: 56px;
+    }
+
+    .nav-logo,
+    #shopping-btn,
+    .dropdown-account,
+    .hamburger {
+        min-width: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        vertical-align: middle;
+        margin-right: 0.5em;
+        height: 44px;
+    }
+
+    .hamburger {
+        order: 4;
+        margin-left: 0.5em;
+        position: relative;
+        left: 10px;
+        top: 19px;
+        font-size: 2em;
+        z-index: 1011;
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex !important;
+        align-items: center;
+        height: 44px;
+    }
+
+    nav > * {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+    }
+}
+
+@media (min-width: 1024px) {
+    .hamburger {
+        display: none;
+    }
+
+    nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: nowrap;
+        padding: 0 24px 0 24px;
+        gap: 0.7em;
+        height: 56px;
+        min-height: 56px;
+    }
+
+    .nav-logo,
+    #shopping-btn,
+    .dropdown-account {
+        min-width: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        vertical-align: middle;
+        margin-right: 0.7em;
+    }
+
+    nav > * {
+        display: flex;
+        align-items: center;
+        gap: 0.7em;
+    }
+  
+}
+
+
