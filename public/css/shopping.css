@@ -456,6 +456,7 @@ color: #ffffff;
         padding: 18px 8px 10px 8px;
     }
 
+    #checkout-form .checkout-confirm-btn,
     #checkout-form .btn-success {
         width: 40%;
         padding: 14px 0;

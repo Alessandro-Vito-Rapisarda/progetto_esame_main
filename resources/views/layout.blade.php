@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <link rel="stylesheet" href="{{ url('css/common.css') }}">
     <link rel="stylesheet" href="{{ url('css/home.css') }}">
     <link rel="stylesheet" href="{{ url('css/shopping.css') }}">
     <link rel="stylesheet" href="{{ url('css/homequery.css') }}">

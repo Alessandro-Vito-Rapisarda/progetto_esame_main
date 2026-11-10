@@ -7,12 +7,13 @@ use Illuminate\Routing\Controller as BaseController;
 use App\Models\Carrello;
 use App\Models\Ordine;
 use App\Models\OrdineProdotti;
+use Illuminate\Support\Facades\Session;
 
 class CheckoutController extends BaseController
 {
     public function showForm(Request $request)
     {
-        $utenteId = \Session::get('user_id');
+        $utenteId = Session::get('user_id');
         if (!$utenteId) {
             return redirect('login');
         }
@@ -24,7 +25,7 @@ class CheckoutController extends BaseController
 
     public function processOrder(Request $request)
     {
-        $utenteId = \Session::get('user_id');
+        $utenteId = Session::get('user_id');
         if (!$utenteId) {
             return redirect('login');
         }

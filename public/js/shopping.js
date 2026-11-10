@@ -1,4 +1,4 @@
-const BASE_URL = 'http://127.0.0.1:8000';
+const BASE_URL = window.location.origin;
 const shoppingItemsDiv = document.querySelector('#shopping-items');
 const metaToken = document.querySelector('meta[name="csrf-token"]');
 const csrfToken = metaToken.content;

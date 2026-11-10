@@ -180,28 +180,46 @@ nav {
     font-size: 1.18em;
     margin-bottom: 0;
 }
-.prodotti-row, .prodotti-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 32px;
-    margin-bottom: 32px;
+.prodotti-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 28px;
+    max-width: 1200px;
+    margin: 0 auto 40px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
+
+.prodotti-row {
+    display: contents;
+}
+
+.prodotti-vuoti {
+    text-align: center;
+    font-size: 1.2em;
+    color: #666;
+    grid-column: 1 / -1;
+    padding: 40px 0;
+}
+
 .prodotto-card {
-    border: 1.5px solid #eaf4fb;
-    border-radius: 14px;
-    padding: 22px 18px 18px 18px;
-    width: 260px;
-    min-height: 370px;
+    border: 1px solid #e5e5e7;
+    border-radius: 18px;
+    padding: 24px 20px;
+    min-height: 380px;
     text-align: center;
     background: #fff;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-sizing: border-box;
 }
 .prodotto-card:hover {
-    transform: translateY(-4px) scale(1.025);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
 }
 .prodotto-img {
     width: 100%;

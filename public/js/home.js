@@ -24,7 +24,7 @@ if (hamburgerSearchForm) {
         if (!data) {
              errorDiv.textContent = 'Errore durante la ricerca.';
         } else if (data.success && data.product && data.product.id) {
-            location.href = 'http://127.0.0.1:8000/prodotto/' + data.product.id;
+            location.href = window.location.origin + '/prodotto/' + data.product.id;
             return;
         } else {
             errorDiv.textContent = data.message;
@@ -39,7 +39,7 @@ if (hamburgerSearchForm) {
     function handleHamburgerSubmit(e) {
         e.preventDefault();
         const name = hamburgerSearchInput.value;
-        fetch('http://127.0.0.1:8000/prodotti/search?nome=' + encodeURIComponent(name))
+        fetch(window.location.origin + '/prodotti/search?nome=' + encodeURIComponent(name))
             .then(onResponse, onError)
             .then(onHamburgerJson);
     }
@@ -131,7 +131,7 @@ if (searchForm && searchInput) {
             return;
         }
         if (data.success && data.product && data.product.id) {
-            location.href = 'http://127.0.0.1:8000/prodotto/' + data.product.id;
+            location.href = window.location.origin + '/prodotto/' + data.product.id;
         } else {
             if (resultDiv) {
                 resultDiv.classList.remove('hidden');
@@ -146,7 +146,7 @@ if (searchForm && searchInput) {
     function handleSearchSubmit(e) {
         e.preventDefault();
         const name = searchInput.value;
-        fetch('http://127.0.0.1:8000/prodotti/search?nome=' + encodeURIComponent(name))
+        fetch(window.location.origin + '/prodotti/search?nome=' + encodeURIComponent(name))
             .then(onResponse, onError)
             .then(onSearchJson);
     }

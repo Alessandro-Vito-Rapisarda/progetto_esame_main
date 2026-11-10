@@ -4,8 +4,8 @@ const usernameInput = document.querySelector('#username');
 const passwordInput = document.querySelector('#password');
 const confermaInput = document.querySelector('#conferma');
 
-const REGISTER_URL = 'http://127.0.0.1:8000/register';
-const LOGIN_URL = 'http://127.0.0.1:8000/login';
+const REGISTER_URL = window.location.origin + '/register';
+const LOGIN_URL = window.location.origin + '/login';
 
 function clearMessage() {
     if (msgElem.textContent) {

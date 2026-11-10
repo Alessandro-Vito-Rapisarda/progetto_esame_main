@@ -7,12 +7,13 @@ use Illuminate\Routing\Controller as BaseController;
 use App\Models\Carrello;
 use App\Models\CarrelloProdotti;
 use App\Models\Prodotto;
+use Illuminate\Support\Facades\Session;
 
 class CartController extends BaseController
 {
    public function index(Request $request)
 {
-    $utenteId = \Session::get('user_id');
+    $utenteId = Session::get('user_id');
 
     if (!$utenteId) {
         return response()->json(['error' => 'Utente non autenticato'], 401);
@@ -64,7 +65,7 @@ class CartController extends BaseController
 
     public function add(Request $request)
     {
-        $utenteId = \Session::get('user_id');
+        $utenteId = Session::get('user_id');
         if (!$utenteId) {
             return response()->json(['error' => 'Utente non autenticato'],  401);
         }
@@ -94,7 +95,7 @@ class CartController extends BaseController
 
     public function remove(Request $request)
     {
-        $utenteId = \Session::get('user_id');
+        $utenteId = Session::get('user_id');
         if (!$utenteId) {
             return response()->json( ['error' => 'Utente non autenticato'], 401);
         }
@@ -112,7 +113,7 @@ class CartController extends BaseController
 
     public function update(Request $request)
     {
-        $utenteId = \Session::get('user_id');
+        $utenteId = Session::get('user_id');
         if (!$utenteId) {
             return response()->json(['error' => 'Utente non autenticato'], 401);
         }
