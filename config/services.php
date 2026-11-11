@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'spotify' => [
+        'client_id' => env('SPOTIFY_PUBLISHABLE_KEY'),
+        'client_secret' => env('SPOTIFY_SECRET_KEY'),
+    ],
+
 ];

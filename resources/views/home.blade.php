@@ -1,15 +1,6 @@
 @extends('layout')
 
-@section('head')
-    <link rel="stylesheet" href="{{ url('css/home.css') }}">
-    <link rel="stylesheet" href="{{ url('css/homequery.css') }}">
-    <meta name ="viewport" content="width=device-width, initial-scale=1">
-
-@endsection
-
-@section('scripts')
-    <script src ='{{ url("js/home.js") }}'defer></script>
-@endsection
+@section('title', 'Home')
 
 @section('body-class', 'home-page')
 
@@ -63,7 +54,7 @@
     </div>
     <div class="hero-macbook">
         <h2>Scopri i nuovi Macbook</h2>
-    <img src="{{ url(path: 'assets/common/promo_macbook_air_avail__e8ksaudoisey_large.jpg') }}" alt="evento">
+    <img src="{{ url('assets/common/promo_macbook_air_avail__e8ksaudoisey_large.jpg') }}" alt="evento">
     <div class='hero-macbook-subdescription'>
             <p>Progettati per Apple Intelligence</p>
         </div>

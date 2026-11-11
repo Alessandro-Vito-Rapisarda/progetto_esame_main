@@ -8,6 +8,8 @@ class OrdineProdotti extends Model
 {
     protected $table = 'ordine_prodotti';
     public $timestamps = false;
+    public $incrementing = false;
+    protected $primaryKey = null;
     protected $fillable = [
         'ordine_id',
         'prodotto_id',

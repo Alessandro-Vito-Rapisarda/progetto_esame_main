@@ -1,15 +1,18 @@
-<script type="module" src="js/fakestore.js" defer></script>
 @extends('layout')
 
+@section('title', 'FakeStore')
+
 @section('head')
-    <title>FakeStore</title>
     <link rel="stylesheet" href="{{ url('css/fakestore.css') }}">
+@endsection
+
+@section('scripts')
+    <script src="{{ url('js/fakestore.js') }}" defer></script>
 @endsection
 
 @section('content')
     <div class="fakestore-title">
         <h1>FakeStore - Prodotti</h1>
-    </div>
     </div>
 
     <div id="fakestore-products" class="fakestore-products"></div>

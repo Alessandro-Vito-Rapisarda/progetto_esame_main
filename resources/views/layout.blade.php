@@ -1,26 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Apple Store')</title>
     <link rel="stylesheet" href="{{ url('css/common.css') }}">
     <link rel="stylesheet" href="{{ url('css/home.css') }}">
     <link rel="stylesheet" href="{{ url('css/shopping.css') }}">
     <link rel="stylesheet" href="{{ url('css/homequery.css') }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     @yield('head')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="{{ url('js/home.js') }}" defer></script>
+    @yield('scripts')
 </head>
 
-
- @yield('scripts')
-    <script src="{{ url('js/home.js') }}" defer></script>
-    <script src="{{ url('js/shopping.js') }}" defer></script>
-
-<body class=@yield('body-class', '')>
+<body class="@yield('body-class')">
 
     <nav>
         <a href="{{ url('home') }}" class="nav-logo"><img src="{{ url('assets/logo.svg') }}" alt="Apple Logo"></a>
-        <button class="hamburger" id="hamburger-btn" aria-label="Menu" aria-expanded="false">
+        <button class="hamburger" id="hamburger-btn" type="button" aria-label="Menu" aria-expanded="false">
             <span class="hamburger-icon">&#9776;</span>
         </button>
         <div class="nav-links" id="nav-links">
@@ -30,17 +29,20 @@
 
             <div class="hamburger-only" id="hamburger-extra-buttons">
                 <form id="hamburger-search-form" action="{{ url('prodotti') }}" method="get">
-                    <input type="text" name="nome" placeholder="Cerca prodotti..." class="hamburger-search-input">
+                    <input type="text" name="nome" maxlength="100" placeholder="Cerca prodotti..." class="hamburger-search-input">
                     <button type="submit" class="hamburger-btn search-btn">
                         <img src="{{ url('assets/search.svg') }}" alt="Cerca" class="hamburger-btn-icon" /> Cerca
                     </button>
                 </form>
                 <div class="hamburger-spacer"></div>
-                <form method="get" action="{{ url('logout') }}">
-                    <button type="submit" class="hamburger-btn logout-btn">
-                        <img src="{{ url('assets/account.png') }}" alt="Logout" class="hamburger-btn-icon"> Logout
-                    </button>
-                </form>
+                @if(session()->has('user_id'))
+                    <form method="post" action="{{ url('logout') }}">
+                        @csrf
+                        <button type="submit" class="hamburger-btn logout-btn">
+                            <img src="{{ url('assets/account.png') }}" alt="Logout" class="hamburger-btn-icon"> Logout
+                        </button>
+                    </form>
+                @endif
             </div>
         </div>
         <div class="dropdown-account" id="account-dropdown-wrapper">
@@ -48,31 +50,33 @@
                 <a href="#" id="account-btn"><img src="{{ url('assets/account.png') }}" alt="profilo"></a>
             </div>
             <div id="account-dropdown" class="account-dropdown">
-                <form method="get" action="{{ url('logout') }}">
-                    <button type="submit">Logout</button>
-                </form>
+                @if(session()->has('user_id'))
+                    <form method="post" action="{{ url('logout') }}">
+                        @csrf
+                        <button type="submit">Logout</button>
+                    </form>
+                @else
+                    <a href="{{ url('login') }}">Accedi</a>
+                @endif
             </div>
         </div>
         <div class="search-dropdown-wrapper" id="search-btn-wrapper">
             <a href="#" id="search-btn"><img src="{{ url('assets/search.svg') }}" alt="lente"></a>
             <div id="search-dropdown" class="search-dropdown">
                 <form id="search-form" action="{{ url('prodotti') }}" method="get">
-                    <input type="text" name="nome" id="search-input" placeholder="Cerca prodotti..."
+                    <input type="text" name="nome" id="search-input" maxlength="100" placeholder="Cerca prodotti..."
                         value="{{ request('nome') }}">
-                        <div id = "result"></div>
+                    <div id="result" class="hidden"></div>
                     <button id="searchBtn" type="submit">Cerca</button>
                 </form>
             </div>
         </div>
-        <a href="{{ url('/shopping') }}" id="shopping-btn"><img src="{{ url('assets/shopping.svg') }}"
+        <a href="{{ url('shopping') }}" id="shopping-btn"><img src="{{ url('assets/shopping.svg') }}"
                 alt="shopping"></a>
-        <span id="welcome-message">Benvenuto, {{$username ?? ''}}</span>
+        <span id="welcome-message">Benvenuto, {{ session('username') }}</span>
     </nav>
 
     <main>
-        <div id="result">
-            
-        </div>
         @yield('content')
     </main>
 
@@ -97,8 +101,7 @@
             </div>
         </div>
 
-        
-        <button class="footer-hamburger" id="footer-hamburger" aria-label="Menu API">
+        <button class="footer-hamburger" id="footer-hamburger" type="button" aria-label="Menu API">
             &#9776;
         </button>
         <div class="footer-api-menu" id="footer-api-menu">
@@ -117,10 +120,6 @@
             </p>
         </div>
     </footer>
-
-   
-
-
 
 </body>
 

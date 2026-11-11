@@ -1,47 +1,41 @@
-const BASE_URL = window.location.origin;
+// Validazione lato browser del checkout (stessa regola di CheckoutRequest lato server)
+(function () {
+    const form = document.querySelector('#checkout-form');
+    const errorBox = document.querySelector('#checkout-error');
+    const address = document.querySelector('#indirizzo_spedizione');
 
-const checkoutForm = document.querySelector("#checkout-form");
-
-function onResponse(response) {
-    if (!response.ok) {
-        console.log("Risposta non valida");
-        return null;
-    } else {
-        location.href = BASE_URL + "/home";
+    if (!form) {
+        return;
     }
-}
 
-
-
-
-function onError(error) {
-    console.log("Error: " + error);
-    alert("Errore di rete.");
-    if (checkoutForm) {
-        const submitBtn = checkoutForm.querySelector('button[type="submit"]');
-        if (submitBtn) submitBtn.disabled = false;
+    function showError(text) {
+        errorBox.textContent = text;
+        errorBox.classList.remove('hidden');
     }
-}
 
-function onCheckoutSubmit(e) {
-    e.preventDefault();
-    const submitBtn = checkoutForm.querySelector('button[type="submit"]');
-    if (submitBtn) submitBtn.disabled = true;
-    const metaToken = document.querySelector('meta[name="csrf-token"]');
-    const csrfToken = metaToken.content;
-    const formData = new FormData(checkoutForm);
-    const bodyData = new URLSearchParams(formData);
-    fetch(BASE_URL + "/checkout", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "X-Requested-With": "XMLHttpRequest",
-            "X-CSRF-TOKEN": csrfToken,
-        },
-        body: bodyData,
-    }).then(onResponse, onError);
-}
+    function onSubmit(e) {
+        const value = address.value.trim();
+        let error = '';
 
-if (checkoutForm) {
-    checkoutForm.addEventListener("submit", onCheckoutSubmit);
-}
+        if (value === '') {
+            error = 'Inserisci l\'indirizzo di spedizione.';
+        } else if (value.length < 5) {
+            error = 'L\'indirizzo deve avere almeno 5 caratteri.';
+        } else if (value.length > 255) {
+            error = 'L\'indirizzo può avere al massimo 255 caratteri.';
+        }
+
+        if (error !== '') {
+            e.preventDefault();
+            showError(error);
+            address.focus();
+        }
+    }
+
+    function onInput() {
+        errorBox.classList.add('hidden');
+    }
+
+    address.addEventListener('input', onInput);
+    form.addEventListener('submit', onSubmit);
+})();

@@ -1,45 +1,37 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Routing\Controller as BaseController;
 
+use Illuminate\Support\Facades\Http;
 
-
-class SpotifyController extends BaseController
+class SpotifyController extends Controller
 {
+    // Restituisce al browser solo il token Spotify (le chiavi restano sul server)
     public function getToken()
     {
-        $clientId = env('SPOTIFY_PUBLISHABLE_KEY');
-        $clientSecret = env('SPOTIFY_SECRET_KEY');
+        $clientId = config('services.spotify.client_id');
+        $clientSecret = config('services.spotify.client_secret');
 
-        $url = 'https://accounts.spotify.com/api/token'; 
+        if (!$clientId || !$clientSecret) {
+            return response()->json(['error' => 'Chiavi Spotify non configurate'], 503);
+        }
 
-        $curl = curl_init();
+        try {
+            $risposta = Http::asForm()
+                ->withBasicAuth($clientId, $clientSecret)
+                ->timeout(10)
+                ->post('https://accounts.spotify.com/api/token', ['grant_type' => 'client_credentials']);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => 'Spotify non raggiungibile'], 502);
+        }
 
-        
-        curl_setopt($curl, CURLOPT_URL, $url);
-        
-        curl_setopt($curl, CURLOPT_POST, 1);
+        if (!$risposta->successful() || !$risposta->json('access_token')) {
+            return response()->json(['error' => 'Token Spotify non ottenuto'], 502);
+        }
 
-       
-        curl_setopt($curl, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
-        
-        $headers = array(
-            "Authorization: Basic " . base64_encode($clientId . ":" . $clientSecret),
-            "Content-Type: application/x-www-form-urlencoded"
-        );
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-
-       
-        curl_setopt( $curl, CURLOPT_RETURNTRANSFER, value: 1);
-
-        $result = curl_exec($curl);
-        
-        curl_close($curl);
-
-    
-        $jsonResponse = json_decode($result, true);
-
-        return response()->json($jsonResponse);
+        return response()->json([
+            'access_token' => $risposta->json('access_token'),
+            'expires_in' => $risposta->json('expires_in'),
+        ]);
     }
 }

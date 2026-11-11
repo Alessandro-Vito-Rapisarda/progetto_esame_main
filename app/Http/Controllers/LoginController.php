@@ -1,92 +1,56 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Routing\Controller as BaseController;
-use Session;
+
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
-class LoginController extends BaseController
+class LoginController extends Controller
 {
-
     public function login_form()
     {
-        if (Session::get('user_id')) {
-            return redirect('home');
-        }
-        $error = Session::get('error');
-        Session::forget('error');
-        return view('login')->with('error', $error);
+        return view('login');
     }
 
-    public function do_login()
+    public function do_login(LoginRequest $request)
     {
-        if (Session::get('user_id')) {
-            return response()->json(['success' => true, 'redirect' => url('home')]);
+        $user = User::where('username', $request->input('username'))->first();
+
+        if (!$user || !Hash::check($request->input('password'), $user->password)) {
+            return back()->withInput($request->only('username'))
+                         ->withErrors(['credenziali' => 'Credenziali non valide.']);
         }
 
-        if (strlen(request('username')) == 0 || strlen(request('password')) == 0) {
-            $error = 'Inserisci username e password';
-            return response()->json(['success' => false, 'error' => $error]);
-        }
+        $request->session()->regenerate();
+        $request->session()->put('user_id', $user->id);
+        $request->session()->put('username', $user->username);
 
-        $user = User::where('username', request('username'))->first();
-        if (!$user || !password_verify(request('password'), $user->password)) {
-            $error = 'Credenziali non valide';
-            return response()->json(['success' => false, 'error' => $error]);
-        }
-
-        Session::put('user_id', $user->id);
-        Session::put('username', $user->username);
-        
-        return response()->json(['success' => true, 'redirect' => url('home')]);
+        return redirect('home');
     }
 
     public function register_form()
     {
-        if (Session::get('user_id')) {
-            return redirect('home');
-        }
-        $error = Session::get('error');
-        Session::forget('error');
-        return view('register')->with('error', $error);
+        return view('register');
     }
 
-    public function do_register()
+    public function do_register(RegisterRequest $request)
     {
-        if (Session::get('user_id')) {
-            return redirect('home');
-        }
-        
-        if (strlen(request('username')) == 0 || strlen(request('password')) == 0) {
-            Session::put('error', 'dati mancanti');
-            return redirect('register')->withInput();
-        } else if (request('password') != request('conferma')) {
-            Session::put('error', 'le password non corrispondono');
-            return redirect('register')->withInput();
-        } else if (User::where('username', request('username'))->first()) {
-            Session::put('error', 'nome utente già esistente');
-            return redirect('register')->withInput();
-        } else if (
-            strlen(request('password')) < 8 ||
-            !preg_match('/[a-z]/', request('password')) ||
-            !preg_match('/[A-Z]/', request('password')) ||
-            !preg_match('/[0-9]/', request('password')) ||
-            !preg_match('/[\W]/', request('password'))
-        ) {
-            Session::put('error', 'password insicura');
-            return redirect('register')->withInput();
-        }
-
         $user = new User();
-        $user->username = request('username');
-        $user->password = password_hash(request('password'), PASSWORD_BCRYPT);
+        $user->username = $request->input('username');
+        $user->password = Hash::make($request->input('password'));
         $user->save();
-        return redirect('login');
+
+        return redirect('login')->with('status', 'Registrazione completata, ora puoi accedere.');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        Session::flush();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect('login');
     }
 }

@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     protected $table = 'utenti';
-
+    protected $fillable = ['username', 'password'];
+    protected $hidden = ['password'];
 
     public function carrelli()
     {
@@ -18,5 +19,4 @@ class User extends Model
     {
         return $this->hasMany(Ordine::class, 'utente_id');
     }
-
 }

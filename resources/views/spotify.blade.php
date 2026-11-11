@@ -1,11 +1,14 @@
-<script type="module" src="js/spotifyAlbum.js" defer></script>
 @extends('layout')
+
+@section('title', 'Spotify')
+
 @section('head')
-    <title>Spotify</title>
     <link rel="stylesheet" href="{{ url('css/spotify.css') }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 @endsection
 
+@section('scripts')
+    <script type="module" src="{{ url('js/spotifyAlbum.js') }}"></script>
+@endsection
 
 @section('content')
     <div class="spotify-hero">
@@ -14,9 +17,7 @@
         <p class="spotify-desc">Cerca album da Spotify!</p>
     </div>
     <div class="spotify-search-flex">
-        <div id="album-container">
-
-        </div>
+        <div id="album-container"></div>
     </div>
     <div class="spotify-switch-search">
         <a href="{{ url('spotify-canzoni') }}" class="spotify-switch-btn">Cerca per canzone</a>
