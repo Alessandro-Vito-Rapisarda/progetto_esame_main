@@ -1,6 +1,9 @@
+import { fetchSpotifyJson, formatArtists, formatDuration } from './spotifyCommon.js';
+
 const container = document.querySelector('#song-container');
+
 const searchForm = document.createElement('form');
-searchForm.classList.add('spotify-search-form');
+searchForm.classList.add('spotify-search-form', 'spotify-search-form-centered');
 
 const input = document.createElement('input');
 input.type = 'text';
@@ -22,53 +25,29 @@ if (container && container.parentNode) {
     container.classList.add('hidden');
 }
 
-
-function onTokenResponse(response) {
-    if (!response.ok) return null;
-    return response.json();
-}
-
-function onTokenData(data) {
-    if (!data || !data.access_token) return null;
-    return data.access_token;
-}
-
-function requestToken() {
-    return fetch('/spotify/token')
-        .then(onTokenResponse)
-        .then(onTokenData);
-}
-
-
-function onResponse(response) {
-    if (!response.ok) {
-        console.log('Risposta non valida');
-        return null; 
+function showMessage(text, isError = false) {
+    if (!container) return;
+    container.classList.remove('hidden');
+    container.innerHTML = '';
+    const p = document.createElement('p');
+    p.textContent = text;
+    if (isError) {
+        p.classList.add('error-msg');
     }
-    return response.json();
+    container.appendChild(p);
 }
 
-function onError(error) {
-    console.log('Error: ' + error);
-    if (container) {
-        container.innerHTML = ''; 
-        const p = document.createElement('p');
-        p.textContent = 'Errore di connessione: ' + error;
-        p.classList.add('error-msg'); 
-        container.appendChild(p);
-    }
-}
-
-
-function onSearchJson(data) {
-
-    container.innerHTML = ''; 
+function renderTrackResults(data) {
+    if (!container) return;
+    container.innerHTML = '';
     container.classList.remove('hidden');
 
-    if (!data || !data.tracks || !data.tracks.items.length) {
-        const p = document.createElement('p');
-        p.textContent = 'Nessuna canzone trovata.';
-        container.appendChild(p);
+    const tracks = Array.isArray(data?.tracks?.items)
+        ? data.tracks.items.filter(Boolean)
+        : [];
+
+    if (!tracks.length) {
+        showMessage('Nessuna canzone trovata.');
         return;
     }
 
@@ -79,17 +58,17 @@ function onSearchJson(data) {
     const listDiv = document.createElement('div');
     listDiv.classList.add('spotify-result-list');
 
-    const tracks = data.tracks.items;
     for (const track of tracks) {
         const card = document.createElement('div');
         card.classList.add('spotify-result-card');
-        card.dataset.trackId = track.id; 
+        card.dataset.trackId = track.id;
 
         const img = document.createElement('img');
-        if (track.album.images && track.album.images.length > 0) {
-            img.src = track.album.images[0].url;
+        const images = track.album?.images;
+        if (Array.isArray(images) && images.length > 0 && images[0]?.url) {
+            img.src = images[0].url;
         }
-        img.alt = track.name;
+        img.alt = track.name || 'Brano';
         img.classList.add('spotify-result-img');
         card.appendChild(img);
 
@@ -98,73 +77,26 @@ function onSearchJson(data) {
 
         const title = document.createElement('div');
         title.classList.add('spotify-result-title');
-        title.textContent = track.name;
+        title.textContent = track.name || 'Senza titolo';
         infoDiv.appendChild(title);
 
         const artist = document.createElement('div');
         artist.classList.add('spotify-result-artist');
-        let artists = [];
-        for (const a of track.artists) artists.push(a.name);
-        artist.textContent = artists.join(', ');
+        artist.textContent = formatArtists(track.artists);
         infoDiv.appendChild(artist);
 
         card.appendChild(infoDiv);
-
         card.addEventListener('click', onTrackClick);
-
         listDiv.appendChild(card);
     }
+
     container.appendChild(listDiv);
 }
 
-function searchTracks(query) {
-
-    function onTokenReceived(token) {
-        
-        const url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(query) + '&type=track';
-        
-        fetch(url, {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        })
-        .then(onResponse, onError)
-        .then(onSearchJson);
-    }
-
-    
-    requestToken().then(onTokenReceived);
-}
-
-function onSubmit(e) {
-    e.preventDefault();
-    const query = input.value.trim();
-    
-    if (!query) {
-        container.classList.add('hidden');
-        return;
-    }
-
-    container.classList.remove('hidden');
-    container.innerHTML = '';
-    const p = document.createElement('p');
-    p.textContent = 'Caricamento...';
-    container.appendChild(p);
-
-    searchTracks(query);
-}
-
-searchForm.addEventListener('submit', onSubmit);
-
-
-
-
-function onTrackDetailJson(data) {
+function renderTrackDetails(data) {
+    if (!container) return;
     if (!data) {
-        container.innerHTML = '';
-        const p = document.createElement('p');
-        p.textContent = 'Impossibile caricare i dettagli della canzone.';
-        container.appendChild(p);
+        showMessage('Impossibile caricare i dettagli della canzone.', true);
         return;
     }
 
@@ -176,44 +108,33 @@ function onTrackDetailJson(data) {
     const infoDiv = document.createElement('div');
     infoDiv.classList.add('spotify-album-info');
 
-    
     const title = document.createElement('div');
     title.classList.add('spotify-album-title');
-    title.textContent = data.name;
+    title.textContent = data.name || 'Brano';
     infoDiv.appendChild(title);
 
-    
     const metaArtist = document.createElement('div');
     metaArtist.classList.add('spotify-album-meta');
-    let artists = [];
-    if(data.artists) {
-        for(const a of data.artists) artists.push(a.name);
-    }
-    metaArtist.textContent = 'Artista: ' + artists.join(', ');
+    metaArtist.textContent = 'Artista: ' + (formatArtists(data.artists) || 'N/D');
     infoDiv.appendChild(metaArtist);
 
-    
     const metaAlbum = document.createElement('div');
     metaAlbum.classList.add('spotify-album-meta');
-    metaAlbum.textContent = 'Album: ' + (data.album ? data.album.name : 'N/A');
+    metaAlbum.textContent = 'Album: ' + (data.album?.name || 'N/D');
     infoDiv.appendChild(metaAlbum);
 
-    
     const metaDuration = document.createElement('div');
     metaDuration.classList.add('spotify-album-meta');
-    const minutes = Math.floor(data.duration_ms / 60000);
-    let seconds = Math.floor((data.duration_ms % 60000) / 1000);
-    const secondsStr = seconds < 10 ? '0' + seconds : seconds;
-    metaDuration.textContent = 'Durata: ' + minutes + ':' + secondsStr;
+    metaDuration.textContent = 'Durata: ' + formatDuration(data.duration_ms);
     infoDiv.appendChild(metaDuration);
 
     albumCard.appendChild(infoDiv);
 
-  
-    if (data.album && data.album.images && data.album.images.length > 0) {
+    const images = data.album?.images;
+    if (Array.isArray(images) && images.length > 0 && images[0]?.url) {
         const img = document.createElement('img');
-        img.src = data.album.images[0].url;
-        img.alt = data.name;
+        img.src = images[0].url;
+        img.alt = data.name || 'Copertina';
         img.classList.add('spotify-album-cover');
         albumCard.appendChild(img);
     }
@@ -223,34 +144,49 @@ function onTrackDetailJson(data) {
     backBtn.href = '#';
     backBtn.classList.add('spotify-back-btn');
     backBtn.textContent = 'Torna ai risultati';
-    backBtn.addEventListener('click', function(e) {
+    backBtn.addEventListener('click', function (e) {
         e.preventDefault();
-        searchForm.dispatchEvent(new Event('submit'));
+        searchForm.dispatchEvent(new Event('submit', { cancelable: true }));
     });
     container.appendChild(backBtn);
 }
 
-function onTrackClick(event) {
-    const card = event.currentTarget;
-    const trackId = card.dataset.trackId;
+async function searchTracks(query) {
+    try {
+        // Limite massimo consentito in Spotify Developer Mode per ricerca: 10 risultati
+        const url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(query) + '&type=track&limit=10';
+        const data = await fetchSpotifyJson(url);
+        renderTrackResults(data);
+    } catch (error) {
+        showMessage('Errore di connessione con Spotify: ' + error.message, true);
+    }
+}
 
-    container.innerHTML = '';
-    const p = document.createElement('p');
-    p.textContent = 'Caricamento canzone...';
-    container.appendChild(p);
+function onSubmit(e) {
+    e.preventDefault();
+    const query = input.value.trim();
 
-    function onTokenReceived(token) {
-
-        const url = 'https://api.spotify.com/v1/tracks/' + trackId;
-        
-        fetch(url, {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        })
-        .then(onResponse, onError)
-        .then(onTrackDetailJson);
+    if (!query) {
+        if (container) container.classList.add('hidden');
+        return;
     }
 
-    requestToken().then(onTokenReceived);
+    showMessage('Caricamento...');
+    searchTracks(query);
 }
+
+async function onTrackClick(event) {
+    const trackId = event.currentTarget.dataset.trackId;
+    if (!trackId) return;
+
+    showMessage('Caricamento canzone...');
+
+    try {
+        const data = await fetchSpotifyJson('https://api.spotify.com/v1/tracks/' + encodeURIComponent(trackId));
+        renderTrackDetails(data);
+    } catch (error) {
+        showMessage('Errore nel caricamento della canzone: ' + error.message, true);
+    }
+}
+
+searchForm.addEventListener('submit', onSubmit);

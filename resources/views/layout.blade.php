@@ -116,7 +116,7 @@
         </div>
         <div class="footer-center">
             <p>&copy; {{ date('Y') }} Tutti i diritti riservati.<br>
-                <br>Powered By: Diego Favitta, 1000044715
+                <br>Powered By: Alessandro Vito Rapisarda, 1000046475
             </p>
         </div>
     </footer>

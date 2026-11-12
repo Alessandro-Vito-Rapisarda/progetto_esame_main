@@ -1,3 +1,4 @@
+import { fetchSpotifyJson, formatArtists, formatDuration } from './spotifyCommon.js';
 
 const container = document.querySelector('#album-container');
 
@@ -21,53 +22,32 @@ searchForm.appendChild(button);
 
 if (container && container.parentNode) {
     container.parentNode.insertBefore(searchForm, container);
-    container.classList.add('hidden'); 
+    container.classList.add('hidden');
 }
 
-function onTokenResponse(response) {
-    if (!response.ok) return null;
-    return response.json();
-}
-
-function onTokenData(data) {
-    if (!data || !data.access_token) return null;
-    return data.access_token;
-}
-
-function requestToken() {
-    return fetch('/spotify/token')
-        .then(onTokenResponse)
-        .then(onTokenData);
-}
-
-
-function onResponse(response) {
-    if (!response.ok) {
-        console.log('Risposta non valida'); 
-        return null; 
+function showMessage(text, isError = false) {
+    if (!container) return;
+    container.classList.remove('hidden');
+    container.innerHTML = '';
+    const p = document.createElement('p');
+    p.textContent = text;
+    if (isError) {
+        p.classList.add('error-msg');
     }
-    return response.json();
+    container.appendChild(p);
 }
 
-function onError(error) {
-    console.log('Error: ' + error);
-    if (container) {
-        container.innerHTML = '';
-        const p = document.createElement('p');
-        p.textContent = 'Errore di connessione: ' + error;
-        container.appendChild(p);
-    }
-}
-
-
-function onSearchJson(data) {
-    container.innerHTML = ''; 
+function renderAlbumResults(data) {
+    if (!container) return;
+    container.innerHTML = '';
     container.classList.remove('hidden');
 
-    if (!data || !data.albums || !data.albums.items.length) {
-        const p = document.createElement('p');
-        p.textContent = 'Nessun album trovato.';
-        container.appendChild(p);
+    const albums = Array.isArray(data?.albums?.items)
+        ? data.albums.items.filter(Boolean)
+        : [];
+
+    if (!albums.length) {
+        showMessage('Nessun album trovato.');
         return;
     }
 
@@ -78,18 +58,16 @@ function onSearchJson(data) {
     const listDiv = document.createElement('div');
     listDiv.classList.add('spotify-result-list');
 
-    const albums = data.albums.items;
-    
     for (const album of albums) {
         const card = document.createElement('div');
         card.classList.add('spotify-result-card');
-        card.dataset.albumId = album.id; 
+        card.dataset.albumId = album.id;
 
         const img = document.createElement('img');
-        if (album.images && album.images.length > 0) {
+        if (Array.isArray(album.images) && album.images.length > 0 && album.images[0]?.url) {
             img.src = album.images[0].url;
         }
-        img.alt = album.name;
+        img.alt = album.name || 'Album';
         img.classList.add('spotify-result-img');
         card.appendChild(img);
 
@@ -98,85 +76,43 @@ function onSearchJson(data) {
 
         const titleDiv = document.createElement('div');
         titleDiv.classList.add('spotify-result-title');
-        titleDiv.textContent = album.name;
+        titleDiv.textContent = album.name || 'Senza titolo';
         infoDiv.appendChild(titleDiv);
 
         const artistDiv = document.createElement('div');
         artistDiv.classList.add('spotify-result-artist');
-        let artistNames = [];
-        for (const artist of album.artists) {
-            artistNames.push(artist.name);
-        }
-        artistDiv.textContent = artistNames.join(', ');
+        artistDiv.textContent = formatArtists(album.artists);
         infoDiv.appendChild(artistDiv);
 
         const dateDiv = document.createElement('div');
         dateDiv.classList.add('spotify-result-meta');
-        dateDiv.textContent = album.release_date;
+        dateDiv.textContent = album.release_date || '';
         infoDiv.appendChild(dateDiv);
 
         card.appendChild(infoDiv);
         card.addEventListener('click', onCardClick);
-        
         listDiv.appendChild(card);
     }
+
     container.appendChild(listDiv);
 }
 
-function searchAlbums(query) {
-
-    function onTokenReceived(token) {
-        const url = 'https://api.spotify.com/v1/search?type=album&q=' + encodeURIComponent(query);
-        
-        fetch(url, {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        })
-        .then(onResponse, onError)
-        .then(onSearchJson);
-    }
-
-    requestToken().then(onTokenReceived);
-}
-
-function onSubmit(e) {
-    e.preventDefault();
-    const query = input.value.trim();
-    if (!query) {
-        container.classList.add('hidden');
-        return;
-    }
-    
-    container.classList.remove('hidden');
-    container.textContent = 'Caricamento...';
-    
-    searchAlbums(query);
-}
-
-searchForm.addEventListener('submit', onSubmit);
-
-
-
-function onAlbumDetailsJson(data) {
+function renderAlbumDetails(data) {
+    if (!container) return;
     if (!data) {
-        container.innerHTML = '';
-        const p = document.createElement('p');
-        p.textContent = 'Impossibile caricare i dettagli dell\'album.';
-        container.appendChild(p);
+        showMessage('Impossibile caricare i dettagli dell\'album.', true);
         return;
     }
 
-    container.innerHTML = ''; 
+    container.innerHTML = '';
 
     const backBtn = document.createElement('a');
     backBtn.href = '#';
     backBtn.classList.add('spotify-back-btn');
     backBtn.textContent = 'Torna ai risultati';
-    
-    backBtn.addEventListener('click', function(e) {
+    backBtn.addEventListener('click', function (e) {
         e.preventDefault();
-        searchForm.dispatchEvent(new Event('submit'));
+        searchForm.dispatchEvent(new Event('submit', { cancelable: true }));
     });
     container.appendChild(backBtn);
 
@@ -188,29 +124,25 @@ function onAlbumDetailsJson(data) {
 
     const titleDiv = document.createElement('div');
     titleDiv.classList.add('spotify-album-title');
-    titleDiv.textContent = data.name;
+    titleDiv.textContent = data.name || 'Album';
     infoDiv.appendChild(titleDiv);
 
     const metaArtist = document.createElement('div');
     metaArtist.classList.add('spotify-album-meta');
-    let artists = [];
-    if (data.artists) {
-        for(const art of data.artists) artists.push(art.name);
-    }
-    metaArtist.textContent = 'Artista: ' + artists.join(', ');
+    metaArtist.textContent = 'Artista: ' + (formatArtists(data.artists) || 'N/D');
     infoDiv.appendChild(metaArtist);
 
     const metaDate = document.createElement('div');
     metaDate.classList.add('spotify-album-meta');
-    metaDate.textContent = 'Data di rilascio: ' + data.release_date;
+    metaDate.textContent = 'Data di rilascio: ' + (data.release_date || 'N/D');
     infoDiv.appendChild(metaDate);
 
     albumCard.appendChild(infoDiv);
 
-    if (data.images && data.images.length > 0) {
+    if (Array.isArray(data.images) && data.images.length > 0 && data.images[0]?.url) {
         const cover = document.createElement('img');
         cover.src = data.images[0].url;
-        cover.alt = data.name;
+        cover.alt = data.name || 'Copertina album';
         cover.classList.add('spotify-album-cover');
         albumCard.appendChild(cover);
     }
@@ -227,42 +159,54 @@ function onAlbumDetailsJson(data) {
     const ul = document.createElement('ul');
     ul.classList.add('spotify-album-tracks-list');
 
-    if (data.tracks && data.tracks.items) {
-        for (const track of data.tracks.items) {
-            const li = document.createElement('li');
-            
-            const minutes = Math.floor(track.duration_ms / 60000);
-            let seconds = Math.floor((track.duration_ms % 60000) / 1000);
-            const secondsStr = seconds < 10 ? '0' + seconds : seconds;
-
-            li.textContent = track.track_number + '. ' + track.name + ' (' + minutes + ':' + secondsStr + ')';
-            ul.appendChild(li);
-        }
+    const tracks = Array.isArray(data?.tracks?.items) ? data.tracks.items.filter(Boolean) : [];
+    for (const track of tracks) {
+        const li = document.createElement('li');
+        const num = track.track_number ?? '';
+        const prefix = num ? num + '. ' : '';
+        li.textContent = prefix + (track.name || 'Traccia') + ' (' + formatDuration(track.duration_ms) + ')';
+        ul.appendChild(li);
     }
+
     tracksContainer.appendChild(ul);
     container.appendChild(tracksContainer);
 }
 
-function onCardClick(event) {
-    const card = event.currentTarget; 
-    const albumId = card.dataset.albumId;
+async function searchAlbums(query) {
+    try {
+        // Limite massimo consentito in Spotify Developer Mode per ricerca: 10 risultati
+        const url = 'https://api.spotify.com/v1/search?type=album&limit=10&q=' + encodeURIComponent(query);
+        const data = await fetchSpotifyJson(url);
+        renderAlbumResults(data);
+    } catch (error) {
+        showMessage('Errore di connessione con Spotify: ' + error.message, true);
+    }
+}
 
-    container.innerHTML = '';
-    const p = document.createElement('p');
-    p.textContent = 'Caricamento album...';
-    container.appendChild(p);
-
-    function onTokenReceived(token) {
-        const url = 'https://api.spotify.com/v1/albums/' + albumId;
-
-        fetch(url, {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        })
-        .then(onResponse, onError)
-        .then(onAlbumDetailsJson);
+function onSubmit(e) {
+    e.preventDefault();
+    const query = input.value.trim();
+    if (!query) {
+        if (container) container.classList.add('hidden');
+        return;
     }
 
-    requestToken().then(onTokenReceived);
+    showMessage('Caricamento...');
+    searchAlbums(query);
 }
+
+async function onCardClick(event) {
+    const albumId = event.currentTarget.dataset.albumId;
+    if (!albumId) return;
+
+    showMessage('Caricamento album...');
+
+    try {
+        const data = await fetchSpotifyJson('https://api.spotify.com/v1/albums/' + encodeURIComponent(albumId));
+        renderAlbumDetails(data);
+    } catch (error) {
+        showMessage('Errore nel caricamento dell\'album: ' + error.message, true);
+    }
+}
+
+searchForm.addEventListener('submit', onSubmit);

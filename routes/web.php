@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CollectionController;
+use App\Http\Controllers\FakeStoreController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OrdineController;
 use App\Http\Controllers\PageController;
@@ -42,4 +43,5 @@ Route::middleware('logged')->group(function () {
     Route::get('spotify-canzoni', [PageController::class, 'spotifySongs']);
     Route::get('spotify/token', [SpotifyController::class, 'getToken']);
     Route::get('fakestore', [PageController::class, 'fakestore']);
+    Route::get('fakestore/products', [FakeStoreController::class, 'products']);
 });

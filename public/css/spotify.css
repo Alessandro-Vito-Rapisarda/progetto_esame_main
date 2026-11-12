@@ -373,6 +373,12 @@ body {
     align-items: center;
 }
 
+.error-msg {
+    color: #ff6b6b;
+    font-weight: 600;
+    text-align: center;
+}
+
 @media (min-width: 1024px) {
     main {
         margin-top: 64px;

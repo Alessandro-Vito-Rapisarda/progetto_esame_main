@@ -130,6 +130,29 @@
     background: #ffa000; 
 }
 
+.fakestore-status {
+    text-align: center;
+    padding: 24px 16px;
+    font-weight: 600;
+    color: #555;
+}
+
+.fakestore-retry-btn {
+    margin-top: 12px;
+    background: #ffb300;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 24px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.fakestore-retry-btn:hover {
+    background: #ffa000;
+}
+
 @media (max-width: 425px) {
     #fakestore-cart {
         max-width: 90%;

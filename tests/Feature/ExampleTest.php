@@ -5,7 +5,9 @@ namespace Tests\Feature;
 use App\Models\Prodotto;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
@@ -116,5 +118,70 @@ class ExampleTest extends TestCase
         $this->get('/prodotti?nome=iPh')->assertSee('iPhone');
         $this->get('/prodotti?nome=zzz')->assertSee('Nessun prodotto trovato');
         $this->get('/prodotti?nome=' . str_repeat('a', 101))->assertSessionHasErrors('nome');
+    }
+
+    public function test_spotify_token_is_cached_and_can_refresh(): void
+    {
+        Cache::flush();
+        config(['services.spotify.client_id' => 'test_id', 'services.spotify.client_secret' => 'test_secret']);
+
+        Http::fakeSequence()
+            ->push(['access_token' => 'tok_1', 'expires_in' => 3600], 200)
+            ->push(['access_token' => 'tok_2', 'expires_in' => 3600], 200);
+
+        $s = $this->logged();
+
+        $this->getJson('/spotify/token')->assertStatus(401);
+
+        $this->withSession($s)->getJson('/spotify/token')
+             ->assertOk()->assertJson(['access_token' => 'tok_1']);
+
+        // Seconda richiesta usa la cache senza richiamare Spotify
+        $this->withSession($s)->getJson('/spotify/token')
+             ->assertOk()->assertJson(['access_token' => 'tok_1']);
+        Http::assertSentCount(1);
+
+        // Con refresh=1 richiede un nuovo token
+        $this->withSession($s)->getJson('/spotify/token?refresh=1')
+             ->assertOk()->assertJson(['access_token' => 'tok_2']);
+        Http::assertSentCount(2);
+    }
+
+    public function test_fakestore_products_proxies_caches_and_uses_backup_fallback(): void
+    {
+        Cache::flush();
+        $sample = [['id' => 1, 'title' => 'Zaino', 'price' => 49.9, 'image' => 'https://example.com/a.png']];
+
+        Http::fakeSequence()
+            ->push($sample, 200)
+            ->push(['error' => 'upstream down'], 503);
+
+        $s = $this->logged();
+
+        $this->getJson('/fakestore/products')->assertStatus(401);
+
+        $this->withSession($s)->getJson('/fakestore/products')
+             ->assertOk()->assertJsonCount(1)->assertJsonFragment(['title' => 'Zaino']);
+
+        // Richiesta successiva servita da cache primaria
+        $this->withSession($s)->getJson('/fakestore/products')
+             ->assertOk()->assertJsonCount(1);
+        Http::assertSentCount(1);
+
+        // Se la cache primaria scade ma l'upstream fallisce, restituisce la cache di backup
+        Cache::forget('fakestore_products');
+        $this->withSession($s)->getJson('/fakestore/products')
+             ->assertOk()->assertJsonFragment(['title' => 'Zaino']);
+    }
+
+    public function test_fakestore_products_returns_502_when_cold_and_upstream_fails(): void
+    {
+        Cache::flush();
+        Http::fake([
+            'https://fakestoreapi.com/products' => Http::response([], 502),
+        ]);
+
+        $s = $this->logged();
+        $this->withSession($s)->getJson('/fakestore/products')->assertStatus(502);
     }
 }
